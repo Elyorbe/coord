@@ -1,6 +1,6 @@
-package com.musinsa.coord.core.error;
+package com.musinsa.coord.common.error;
 
-import com.musinsa.coord.core.error.exception.ErrorCode;
+import com.musinsa.coord.common.error.exception.ErrorCode;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;

@@ -1,7 +1,7 @@
-package com.musinsa.coord.core.error;
+package com.musinsa.coord.common.error;
 
-import com.musinsa.coord.core.error.exception.BusinessException;
-import com.musinsa.coord.core.error.exception.ErrorCode;
+import com.musinsa.coord.common.error.exception.BusinessException;
+import com.musinsa.coord.common.error.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

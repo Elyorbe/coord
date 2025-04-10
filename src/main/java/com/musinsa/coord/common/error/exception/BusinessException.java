@@ -1,6 +1,6 @@
-package com.musinsa.coord.core.error.exception;
+package com.musinsa.coord.common.error.exception;
 
-import com.musinsa.coord.core.error.ErrorResponse;
+import com.musinsa.coord.common.error.ErrorResponse;
 import lombok.Getter;
 
 @Getter

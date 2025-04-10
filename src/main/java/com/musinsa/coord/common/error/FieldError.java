@@ -1,4 +1,4 @@
-package com.musinsa.coord.core.error;
+package com.musinsa.coord.common.error;
 
 import org.springframework.validation.BindingResult;
 

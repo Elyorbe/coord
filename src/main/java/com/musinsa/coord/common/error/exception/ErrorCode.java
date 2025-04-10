@@ -1,4 +1,4 @@
-package com.musinsa.coord.core.error.exception;
+package com.musinsa.coord.common.error.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
