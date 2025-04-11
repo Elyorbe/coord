@@ -3,5 +3,10 @@ server:
   shutdown: graceful
 
 spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:coord;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: admin
+    password: password
   banner:
     location: classpath:/banner/test.txt
