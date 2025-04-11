@@ -2,6 +2,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'nu.studer.jooq' version '8.2'
+	id 'org.flywaydb.flyway' version '9.22.3'
 }
 
 group = 'com.musinsa'
@@ -32,8 +34,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 	implementation 'org.flywaydb:flyway-core'
+	jooqGenerator 'org.jooq:jooq-codegen'
+	jooqGenerator 'com.h2database:h2'
 	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -43,4 +48,57 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/generated'
+		}
+	}
+}
+
+def h2Url = "jdbc:h2:file:${projectDir}/data/coord;MODE=MySQL;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE"
+
+flyway {
+	url = h2Url
+	user = 'admin'
+	password = 'password'
+	locations = ['filesystem:src/main/resources/db/migration']
+}
+
+jooq {
+	version = '3.18.6'
+	configurations {
+		main {
+			generationTool {
+				jdbc {
+					driver = 'org.h2.Driver'
+					url = h2Url
+					user = 'admin'
+					password = 'password'
+				}
+				generator {
+					database {
+						name = 'org.jooq.meta.h2.H2Database'
+						inputSchema = 'PUBLIC'
+					}
+					target {
+						packageName = 'com.musinsa.coord'
+						directory = 'src/main/generated'
+					}
+				}
+			}
+		}
+	}
+}
+
+// Flyway runs before jOOQ codegen
+tasks.named('generateJooq') {
+	dependsOn 'flywayMigrate'
+}
+
+tasks.named('build') {
+	dependsOn 'generateJooq'
 }
