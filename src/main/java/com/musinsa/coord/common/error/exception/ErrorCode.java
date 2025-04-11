@@ -14,7 +14,10 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "C005", " Invalid type value"),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "C006", "Resource doesn't exist"),
     NO_HANDLER_FOUND(HttpStatus.NOT_FOUND, "C007", "No handler found for the request"),
-    DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "C008", "Data integrity violated");
+    DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "C008", "Data integrity violated"),
+
+    DUPLICATE_PRODUCT(HttpStatus.CONFLICT, "D001", "Product with same brand and category already exists"),
+    REFERENCED_RESOURCE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "D002", "Referenced resource not exists");
 
     private final HttpStatus status;
     private final String message;

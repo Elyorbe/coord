@@ -88,6 +88,13 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(errorResponse);
     }
 
+    @ExceptionHandler(Exception.class)
+    ResponseEntity<ErrorResponse> handleException(Exception e, HttpServletRequest request) {
+        logError(request,e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
+        return buildResponseEntity(errorResponse);
+    }
+
     private void logWarn(String handlerMethod, HttpServletRequest request, Exception exception) {
         log.warn("{}. Request path: {}", handlerMethod, request.getRequestURI(), exception);
     }
