@@ -1,6 +1,6 @@
 package com.musinsa.coord.category;
 
-import com.musinsa.coord.common.entity.BaseEntity;
+import com.musinsa.coord.common.repository.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,4 +1,4 @@
-package com.musinsa.coord.common.entity;
+package com.musinsa.coord.common.repository;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.musinsa.coord.product;
 
 import com.musinsa.coord.brand.Brand;
 import com.musinsa.coord.category.Category;
-import com.musinsa.coord.common.entity.BaseEntity;
+import com.musinsa.coord.common.repository.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
