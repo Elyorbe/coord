@@ -34,7 +34,7 @@ public class BrandService {
     @Transactional
     public Long createBrand(BrandCreateRequest request) {
         if (brandRepository.existsByName(request.name())) {
-            throw new IllegalArgumentException("Brand name already exists.");
+            throw new BusinessException(ErrorCode.DUPLICATE_RESOURCE);
         }
 
         Brand brand = Brand.builder()
