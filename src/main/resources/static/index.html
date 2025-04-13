@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Musinsa Assignment</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            background: #eee;
+            margin-bottom: 20px;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            padding: 8px 12px;
+            display: block;
+        }
+        nav ul li a:hover {
+            background: #ddd;
+        }
+        h1 { color: #222; }
+        h2, h3 { color: #333; margin-top: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        table, th, td { border: 1px solid #ccc; }
+        th, td { padding: 8px; text-align: left; }
+        input, select, button { padding: 6px; margin: 4px 0; }
+        .section { margin-bottom: 40px; }
+        .form-group { margin-bottom: 10px; }
+        .actions button { margin-right: 4px; }
+        /* Hide sections by default; we'll show the active one */
+        .content-section { display: none; }
+    </style>
+</head>
+<body>
+<h1>무신사 과제 </h1>
+
+<!-- Navigation Bar -->
+<nav>
+    <ul>
+        <li><a href="#" onclick="showSection('catalogSection')">Catalog</a></li>
+        <li><a href="#" onclick="showSection('managementSection')">Management</a></li>
+    </ul>
+</nav>
+
+<!-- Catalog Section -->
+<div id="catalogSection" class="content-section">
+    <h2>카탈로그 (구현 1, 2, 3)</h2>
+
+    <!-- Cheapest Product Per Category -->
+    <div class="section">
+        <h3>구현 1</h3>
+        <button id="btnCheapestPerCategory">Fetch Cheapest per Category</button>
+        <table id="tableCheapestPerCategory">
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total Price</strong></td>
+                <td id="totalPrice"></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Cheapest Total Brand -->
+    <div class="section">
+        <h3>구현 2</h3>
+        <button id="btnCheapestTotalBrand">Fetch Cheapest Total Brand</button>
+        <table id="tableCheapestTotalBrand">
+            <thead>
+            <tr>
+                <th>Brand</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h4>Category Prices</h4>
+        <table id="tableCategoryPrices">
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Min/Max Prices By Category -->
+    <div class="section">
+        <h3>구현 3</h3>
+        <label for="categoryInput">Category Name:</label>
+        <input id="categoryInput" type="text" placeholder="e.g. 상의" />
+        <button id="btnMinMaxPrices">Fetch Min/Max Prices</button>
+        <h4>Min Prices</h4>
+        <table id="tableMinPrices">
+            <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Brand Name</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h4>Max Prices</h4>
+        <table id="tableMaxPrices">
+            <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Brand Name</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Management Section: Brand & Product Management -->
+<div id="managementSection" class="content-section">
+    <h2>브랜드 및 상품 관리 (구현 4)</h2>
+
+    <!-- Brand Management -->
+    <div class="section" id="brandManagement">
+        <h3>브랜드 관리</h3>
+        <button id="btnFetchBrands">Fetch All Brands</button>
+        <table id="brandTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h4>Create Brand</h4>
+        <div class="form-group">
+            <input id="newBrandName" type="text" placeholder="Brand Name" />
+            <button id="btnCreateBrand">Create Brand</button>
+        </div>
+        <h4>Update Brand</h4>
+        <div class="form-group">
+            <input id="updateBrandId" type="number" placeholder="Brand ID" />
+            <input id="updateBrandName" type="text" placeholder="New Brand Name" />
+            <button id="btnUpdateBrand">Update Brand</button>
+        </div>
+    </div>
+
+    <!-- Product Management -->
+    <div class="section" id="productManagement">
+        <h3>브랜드 및 상품 관리</h3>
+        <button id="btnFetchProducts">Fetch All Products</button>
+        <table id="productTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Price</th>
+                <th>Variants</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h4>Create Product</h4>
+        <div class="form-group">
+            <label>Brand:</label>
+            <select id="createProductBrand">
+                <option value="">Loading brands...</option>
+            </select>
+            <label>Category:</label>
+            <select id="createProductCategory">
+                <!-- Hardcoded category IDs from seed data -->
+                <option value="1">상의</option>
+                <option value="2">아우터</option>
+                <option value="3">바지</option>
+                <option value="4">스니커즈</option>
+                <option value="5">가방</option>
+                <option value="6">모자</option>
+                <option value="7">양말</option>
+                <option value="8">액세서리</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input id="createProductName" type="text" placeholder="Product Name" />
+            <input id="createProductCode" type="text" placeholder="Product Code" />
+            <input id="createProductPrice" type="number" placeholder="Price" />
+        </div>
+        <div class="form-group">
+            <h4>Product Variant</h4>
+            <input id="createVariantColor" type="text" placeholder="Variant Color (optional)" />
+            <input id="createVariantSize" type="text" placeholder="Variant Size" value="One Size" />
+        </div>
+        <button id="btnCreateProduct">Create Product</button>
+
+        <h4>Update Product</h4>
+        <div class="form-group">
+            <input id="updateProductId" type="number" placeholder="Product ID" />
+        </div>
+        <div class="form-group">
+            <label>Brand:</label>
+            <select id="updateProductBrand">
+                <option value="">Loading brands...</option>
+            </select>
+            <label>Category:</label>
+            <select id="updateProductCategory">
+                <option value="1">상의</option>
+                <option value="2">아우터</option>
+                <option value="3">바지</option>
+                <option value="4">스니커즈</option>
+                <option value="5">가방</option>
+                <option value="6">모자</option>
+                <option value="7">양말</option>
+                <option value="8">액세서리</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input id="updateProductName" type="text" placeholder="Product Name" />
+            <input id="updateProductCode" type="text" placeholder="Product Code" />
+            <input id="updateProductPrice" type="number" placeholder="Price" />
+        </div>
+        <div class="form-group">
+            <h4>Product Variant (Update)</h4>
+            <input id="updateVariantColor" type="text" placeholder="Variant Color (optional)" />
+            <input id="updateVariantSize" type="text" placeholder="Variant Size" value="One Size" />
+        </div>
+        <button id="btnUpdateProduct">Update Product</button>
+    </div>
+</div>
+
+<script>
+    // Navigation: show the specified section and hide the others.
+    function showSection(sectionId) {
+        document.getElementById('catalogSection').style.display = 'none';
+        document.getElementById('managementSection').style.display = 'none';
+        document.getElementById(sectionId).style.display = 'block';
+    }
+
+    // ----------------------------
+    // Catalog Section Functions
+    // ----------------------------
+    // Fetch Cheapest Product Per Category
+    document.getElementById('btnCheapestPerCategory').addEventListener('click', function() {
+        fetch('/api/v1/catalog/cheapest-per-category')
+            .then(response => { if (!response.ok) throw new Error('Error: ' + response.status); return response.json(); })
+            .then(data => {
+                const tbody = document.querySelector('#tableCheapestPerCategory tbody');
+                tbody.innerHTML = "";
+                data.selections.forEach(selection => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+              <td>${selection.category}</td>
+              <td>${selection.brand}</td>
+              <td>${selection.price}</td>
+            `;
+                    tbody.appendChild(row);
+                });
+                document.getElementById('totalPrice').innerText = data.totalPrice;
+            })
+            .catch(error => alert("Error: " + error));
+    });
+
+    // Fetch Cheapest Total Brand
+    document.getElementById('btnCheapestTotalBrand').addEventListener('click', function() {
+        fetch('/api/v1/catalog/cheapest-total-brand')
+            .then(response => { if (!response.ok) throw new Error('Error: ' + response.status); return response.json(); })
+            .then(data => {
+                const tbody = document.querySelector('#tableCheapestTotalBrand tbody');
+                tbody.innerHTML = "";
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${data.minPrice.brand}</td><td>${data.minPrice.totalPrice}</td>`;
+                tbody.appendChild(row);
+
+                const catTbody = document.querySelector('#tableCategoryPrices tbody');
+                catTbody.innerHTML = "";
+                data.minPrice.categoryPrices.forEach(cp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${cp.category}</td><td>${cp.price}</td>`;
+                    catTbody.appendChild(row);
+                });
+            })
+            .catch(error => alert("Error: " + error));
+    });
+
+    // Fetch Min/Max Prices By Category
+    document.getElementById('btnMinMaxPrices').addEventListener('click', function() {
+        const category = document.getElementById('categoryInput').value.trim();
+        if (!category) { alert("Please enter a category name."); return; }
+        fetch('/api/v1/catalog/min-max-prices?categoryName=' + encodeURIComponent(category))
+            .then(response => {
+                if (!response.ok) return response.json().then(err => { throw new Error(err.message || 'Error: ' + response.status); });
+                return response.json();
+            })
+            .then(data => {
+                const minTbody = document.querySelector('#tableMinPrices tbody');
+                minTbody.innerHTML = "";
+                data.minPrice.forEach(mp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${mp.productId}</td><td>${mp.brandName}</td><td>${mp.price}</td>`;
+                    minTbody.appendChild(row);
+                });
+
+                const maxTbody = document.querySelector('#tableMaxPrices tbody');
+                maxTbody.innerHTML = "";
+                data.maxPrice.forEach(mp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${mp.productId}</td><td>${mp.brandName}</td><td>${mp.price}</td>`;
+                    maxTbody.appendChild(row);
+                });
+            })
+            .catch(error => alert("Error: " + error.message));
+    });
+
+    // ----------------------------
+    // Brand Management Functions
+    // ----------------------------
+    function fetchBrands() {
+        fetch('/api/v1/brands')
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.message); return response.json(); })
+            .then(data => {
+                const tbody = document.querySelector("#brandTable tbody");
+                tbody.innerHTML = "";
+                data.content.forEach(brand => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+              <td>${brand.id}</td>
+              <td>${brand.name}</td>
+              <td class="actions">
+                <button onclick="deleteBrand(${brand.id})">Delete</button>
+                 <!-- <button onclick="populateBrandUpdate(${brand.id}, '${brand.name}')">Edit</button> -->
+              </td>
+            `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => alert("Failed to fetch brands: " + error));
+    }
+
+    document.getElementById("btnFetchBrands").addEventListener("click", fetchBrands);
+
+    document.getElementById("btnCreateBrand").addEventListener("click", function() {
+        const name = document.getElementById("newBrandName").value.trim();
+        if (!name) { alert("Brand name cannot be empty."); return; }
+        fetch("/api/v1/brands", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name })
+        })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.message); return response.json(); })
+            .then(data => { alert("Brand created with ID: " + data.id); fetchBrands(); loadBrandsForProductDropdowns(); })
+            .catch(error => alert("Failed to create brand: " + error));
+    });
+
+    document.getElementById("btnUpdateBrand").addEventListener("click", function() {
+        const id = document.getElementById("updateBrandId").value;
+        const name = document.getElementById("updateBrandName").value.trim();
+        if (!id || !name) { alert("Please provide both Brand ID and new name."); return; }
+        fetch(`/api/v1/brands/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name })
+        })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => { alert("Brand updated successfully."); fetchBrands(); loadBrandsForProductDropdowns(); })
+            .catch(error => alert("Failed to update brand: " + error));
+    });
+
+    function deleteBrand(id) {
+        if (!confirm("Are you sure you want to delete brand ID " + id + "?")) return;
+        fetch(`/api/v1/brands/${id}`, { method: "DELETE" })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => { alert("Brand deleted successfully."); fetchBrands(); loadBrandsForProductDropdowns(); })
+            .catch(error => alert("Failed to delete brand: " + error));
+    }
+
+    function populateBrandUpdate(id, name) {
+        document.getElementById("updateBrandId").value = id;
+        document.getElementById("updateBrandName").value = name;
+    }
+
+    // ----------------------------
+    // Product Management Functions
+    // ----------------------------
+    // Load brands into product dropdowns (for create and update)
+    function loadBrandsForProductDropdowns() {
+        fetch('/api/v1/brands')
+            .then(response => { if (!response.ok) throw new Error('Error: ' + response.status); return response.json(); })
+            .then(data => {
+                const brands = data.content || [];
+                const createSelect = document.getElementById('createProductBrand');
+                const updateSelect = document.getElementById('updateProductBrand');
+                createSelect.innerHTML = "";
+                updateSelect.innerHTML = "";
+                if (brands.length === 0) {
+                    createSelect.innerHTML = "<option value=''>No brands available</option>";
+                    updateSelect.innerHTML = "<option value=''>No brands available</option>";
+                } else {
+                    brands.forEach(brand => {
+                        const option = document.createElement('option');
+                        option.value = brand.id;
+                        option.text = brand.name;
+                        createSelect.appendChild(option);
+                        updateSelect.appendChild(option.cloneNode(true));
+                    });
+                }
+            })
+            .catch(error => alert("Failed to load brands: " + error));
+    }
+
+    function fetchProducts() {
+        fetch('/api/v1/products')
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => {
+                const tbody = document.querySelector("#productTable tbody");
+                tbody.innerHTML = "";
+                data.content.forEach(product => {
+                    const variants = product.productVariants.map(v =>
+                        `ID: ${v.id}, Color: ${v.color || '-'}, Size: ${v.size || '-'}`).join(" | ");
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+              <td>${product.id}</td>
+              <td>${product.brand.name}</td>
+              <td>${product.category.name}</td>
+              <td>${product.name || '-'}</td>
+              <td>${product.code || '-'}</td>
+              <td>${product.price}</td>
+              <td>${variants}</td>
+              <td class="actions">
+                <button onclick="deleteProduct(${product.id})">Delete</button>
+                <!--<button onclick="populateProductUpdate(${product.id}, '${product.brand.id}', '${product.category.id}', '${product.name}', '${product.code}', ${product.price})">Edit</button> -->
+              </td>
+            `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => alert("Failed to fetch products: " + error));
+    }
+
+    document.getElementById("btnFetchProducts").addEventListener("click", fetchProducts);
+
+    document.getElementById("btnCreateProduct").addEventListener("click", function() {
+        const brandId = parseInt(document.getElementById('createProductBrand').value);
+        const categoryId = parseInt(document.getElementById('createProductCategory').value);
+        const name = document.getElementById('createProductName').value.trim();
+        const code = document.getElementById('createProductCode').value.trim();
+        const price = parseInt(document.getElementById('createProductPrice').value);
+        const variantColor = document.getElementById('createVariantColor').value.trim();
+        const variantSize = document.getElementById('createVariantSize').value.trim() || "One Size";
+        if (!brandId || !categoryId || !price) {
+            alert("Please fill in required fields: brand, category, and price.");
+            return;
+        }
+        const request = {
+            brandId, categoryId, name, code, price,
+            variants: [{ color: variantColor, size: variantSize }]
+        };
+        fetch('/api/v1/products', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(request)
+        })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => { alert("Product created with ID: " + data.id); fetchProducts(); })
+            .catch(error => alert("Failed to create product: " + error));
+    });
+
+    document.getElementById("btnUpdateProduct").addEventListener("click", function() {
+        const id = parseInt(document.getElementById('updateProductId').value);
+        const brandId = parseInt(document.getElementById('updateProductBrand').value);
+        const categoryId = parseInt(document.getElementById('updateProductCategory').value);
+        const name = document.getElementById('updateProductName').value.trim();
+        const code = document.getElementById('updateProductCode').value.trim();
+        const price = parseInt(document.getElementById('updateProductPrice').value);
+        const variantColor = document.getElementById('updateVariantColor').value.trim();
+        const variantSize = document.getElementById('updateVariantSize').value.trim() || "One Size";
+        if (!id || !brandId || !categoryId || !price) {
+            alert("Please fill in required fields: product ID, brand, category, and price.");
+            return;
+        }
+        const request = {
+            brandId, categoryId, name, code, price,
+            variants: [{ color: variantColor, size: variantSize }]
+        };
+        fetch('/api/v1/products/' + id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(request)
+        })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => { alert("Product updated successfully."); fetchProducts(); })
+            .catch(error => alert("Failed to update product: " + error));
+    });
+
+    function deleteProduct(id) {
+        if (!confirm("Are you sure you want to delete product ID " + id + "?")) return;
+        fetch('/api/v1/products/' + id, { method: "DELETE" })
+            .then(response => { if (!response.ok) throw new Error("Error: " + response.status); return response.json(); })
+            .then(data => { alert("Product deleted successfully."); fetchProducts(); })
+            .catch(error => alert("Failed to delete product: " + error));
+    }
+
+    function populateProductUpdate(id, brandId, categoryId, name, code, price) {
+        document.getElementById("updateProductId").value = id;
+        document.getElementById("updateProductBrand").value = brandId;
+        document.getElementById("updateProductCategory").value = categoryId;
+        document.getElementById("updateProductName").value = name;
+        document.getElementById("updateProductCode").value = code;
+        document.getElementById("updateProductPrice").value = price;
+        document.getElementById("updateVariantColor").value = "";
+        document.getElementById("updateVariantSize").value = "One Size";
+    }
+
+    // ----------------------------
+    // On Page Load: show default section and load dropdowns
+    // ----------------------------
+    document.addEventListener("DOMContentLoaded", function(){
+        // Default to showing Catalog section.
+        showSection('catalogSection');
+        // Load brands into product dropdowns immediately.
+        loadBrandsForProductDropdowns();
+    });
+</script>
+</body>
+</html>
