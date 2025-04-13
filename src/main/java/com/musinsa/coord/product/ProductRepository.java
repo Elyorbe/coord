@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     """)
     boolean existsByBrandIdAndCategoryId(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
+    boolean existsByBrandId(Long brandId);
+
 }

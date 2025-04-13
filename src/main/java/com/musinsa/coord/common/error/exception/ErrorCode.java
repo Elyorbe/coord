@@ -17,7 +17,8 @@ public enum ErrorCode {
     DATA_INTEGRITY_VIOLATION(HttpStatus.BAD_REQUEST, "C008", "Data integrity violated"),
 
     DUPLICATE_PRODUCT(HttpStatus.CONFLICT, "D001", "Product with same brand and category already exists"),
-    REFERENCED_RESOURCE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "D002", "Referenced resource not exists");
+    REFERENCED_RESOURCE_NOT_EXISTS(HttpStatus.BAD_REQUEST, "D002", "Referenced resource not exists"),
+    BRAND_HAS_ASSOCIATED_PRODUCTS(HttpStatus.BAD_REQUEST,"D003","Brand has associated products and cannot be deleted");
 
     private final HttpStatus status;
     private final String message;
