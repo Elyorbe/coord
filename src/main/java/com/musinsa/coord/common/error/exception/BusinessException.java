@@ -13,4 +13,9 @@ public class BusinessException extends RuntimeException {
         this.errorResponse = ErrorResponse.of(errorCode);
     }
 
+    public BusinessException(ErrorCode errorCode, String additionalMessage) {
+        super(errorCode.getMessage());
+        this.errorResponse = ErrorResponse.of(errorCode, additionalMessage);
+    }
+
 }

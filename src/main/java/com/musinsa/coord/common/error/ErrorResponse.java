@@ -15,6 +15,7 @@ public class ErrorResponse {
     private final int status;
     private final String code;
     private final List<FieldError> errors;
+    private String additionalMessage;
 
     private ErrorResponse(ErrorCode code, List<FieldError> errors) {
         this.message = code.getMessage();
@@ -25,6 +26,7 @@ public class ErrorResponse {
 
     private ErrorResponse(final ErrorCode code) {
         this.message = code.getMessage();
+        this.additionalMessage = "";
         this.status = code.getStatus().value();
         this.code = code.getCode();
         this.errors = new ArrayList<>();
@@ -36,6 +38,12 @@ public class ErrorResponse {
 
     public static ErrorResponse of(ErrorCode code) {
         return new ErrorResponse(code);
+    }
+
+    public static ErrorResponse of(ErrorCode code, String additionalMessage) {
+        ErrorResponse errorResponse = new ErrorResponse(code);
+        errorResponse.additionalMessage = additionalMessage;
+        return errorResponse;
     }
 
     public static ErrorResponse of(ErrorCode code, FieldError error) {
