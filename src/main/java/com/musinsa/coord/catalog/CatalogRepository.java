@@ -1,7 +1,6 @@
 package com.musinsa.coord.catalog;
 
-import com.musinsa.coord.catalog.dto.CheapestProductByBrand;
-import com.musinsa.coord.catalog.dto.CheapestProductByCategory;
+import com.musinsa.coord.catalog.dto.*;
 import org.jooq.*;
 import org.springframework.stereotype.Repository;
 
@@ -73,6 +72,36 @@ public class CatalogRepository {
                 .fetch()
                 .map(Records.mapping(CheapestProductByBrand.CategoryPrice::new));
         return new CheapestProductByBrand(brandName, categoryPrices, totalPrice);
+    }
+
+    public MinMaxPrice findMinMaxPriceByCategory(String categoryName) {
+         return ctx.select(
+                min(PRODUCT.PRICE).as("min_price"),
+                max(PRODUCT.PRICE).as("max_price")
+        )
+        .from(PRODUCT)
+        .innerJoin(CATEGORY).on(PRODUCT.CATEGORY_ID.eq(CATEGORY.ID))
+        .where(CATEGORY.NAME.eq(categoryName))
+        .fetchOneInto(MinMaxPrice.class);
+    }
+
+    public List<ProductPrice> findProductPriceByCategoryAndPrice(String categoryName, Integer price) {
+        return ctx.select(
+                PRODUCT.ID,
+                BRAND.NAME.as("brand_name"),
+                PRODUCT.PRICE
+        )
+        .from(PRODUCT)
+        .innerJoin(BRAND).on(PRODUCT.BRAND_ID.eq(BRAND.ID))
+        .innerJoin(CATEGORY).on(PRODUCT.CATEGORY_ID.eq(CATEGORY.ID))
+        .where(CATEGORY.NAME.eq(categoryName)
+                .and(PRODUCT.PRICE.eq(price)))
+        .fetch()
+        .map(Records.mapping(ProductPrice::new));
+    }
+
+    public boolean categoryExistsByName(String categoryName) {
+        return ctx.fetchExists(select(CATEGORY.NAME).from(CATEGORY).where(CATEGORY.NAME.eq(categoryName)));
     }
 
 }
